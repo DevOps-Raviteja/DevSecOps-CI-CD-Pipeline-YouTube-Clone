@@ -45,8 +45,7 @@ pipeline {
             steps{
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                        sh "docker build -t youtube-clone:version-${BUILD_NUMBER} ."
-                        sh "docker tag youtube-clone:version-${BUILD_NUMBER} ravitejadarla5/youtube-clone:latest"
+                        sh "docker build -t ravitejadarla5/youtube-clone:version-${BUILD_NUMBER} ."
                     }
                 }
             }
@@ -60,8 +59,9 @@ pipeline {
             steps{
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                        sh "docker tag ravitejadarla5/youtube-clone:version-${BUILD_NUMBER} ravitejadarla5/youtube-clone:latest"
+                        sh "docker push ravitejadarla5/youtube-clone:version-${BUILD_NUMBER}"
                         sh 'docker push ravitejadarla5/youtube-clone:latest'
-                        sh "docker push youtube-clone:version-${BUILD_NUMBER} "
                     }
                 }
             }
