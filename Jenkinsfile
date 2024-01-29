@@ -38,7 +38,7 @@ pipeline {
         }
         stage ('OWASP-Check'){
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'OWASP-Check'
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
@@ -47,70 +47,35 @@ pipeline {
                 sh 'trivy fs . > trivyFileSystemScanReport.txt'
             }
         }
-        stage ('Docker Build-Push'){
+        stage ('Docker-Build'){
             steps{
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                        sh 'docker build -t youtube-clone .'
+                        sh "docker build -t youtube-clone:version-${BUILD_NUMBER} ."
                         sh 'docker tag youtube-clone ravitejadarla5/youtube-clone:latest'
-                        sh 'docker push ravitejadarla5/youtube-clone:latest'
                     }
                 }
             }
         }
         stage ('Trivy Image Scan'){
             steps{
-                sh 'trivy image ravitejadarla5/youtube-clone:latest > trivyImageScanReport.txt'
+                sh "trivy image youtube-clone:version-${BUILD_NUMBER} > trivyImageScanReport.txt"
+            }
+        }
+        stage ('Docker-Push'){
+            steps{
+                script {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
+                        sh 'docker push ravitejadarla5/youtube-clone:latest'
+                        sh "docker push youtube-clone:version-${BUILD_NUMBER} "
+                    }
+                }
+            }
+        }
+        stage ('Clear-Artifacts'){
+            steps {
+                sh 'docker image rmi ravitejadarla5/youtube-clone youtube-clone'
             }
         }
     }
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
