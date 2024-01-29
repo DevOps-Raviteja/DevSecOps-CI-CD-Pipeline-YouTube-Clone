@@ -68,7 +68,7 @@ pipeline {
         }
         stage ('Clear-Artifacts'){
             steps {
-                sh 'docker image rmi ravitejadarla5/youtube-clone youtube-clone'
+                sh "docker image rmi ravitejadarla5/youtube-clone:latest ravitejadarla5/youtube-clone:version-${BUILD_NUMBER}"
             }
         }
     }
