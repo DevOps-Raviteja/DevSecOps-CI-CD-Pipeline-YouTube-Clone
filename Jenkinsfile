@@ -46,7 +46,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
                         sh "docker build -t youtube-clone:version-${BUILD_NUMBER} ."
-                        sh 'docker tag youtube-clone ravitejadarla5/youtube-clone:latest'
+                        sh "docker tag youtube-clone:version-${BUILD_NUMBER} ravitejadarla5/youtube-clone:latest"
                     }
                 }
             }
