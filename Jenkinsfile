@@ -52,7 +52,7 @@ pipeline {
         }
         stage ('Trivy Image Scan'){
             steps{
-                sh "trivy image youtube-clone:version-${BUILD_NUMBER} > trivyImageScanReport.txt"
+                sh "trivy image ravitejadarla5/youtube-clone:version-${BUILD_NUMBER} > trivyImageScanReport.txt"
             }
         }
         stage ('Docker-Push'){
