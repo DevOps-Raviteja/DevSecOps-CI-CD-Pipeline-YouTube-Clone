@@ -15,7 +15,7 @@ pipeline {
         }
         stage ('Git Check-Out'){
             steps{
-                git branch: 'main', url: 'https://github.com/Ravitejadarla5/DevSecOps-CI-CD-Pipeline-YouTube-Clone.git'
+                git branch: 'main', url: 'https://github.com/DevOps-Raviteja/DevSecOps-CI-CD-Pipeline-YouTube-Clone.git'
             }
         }
         stage ('SonarQube-Analysis'){
