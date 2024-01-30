@@ -71,5 +71,17 @@ pipeline {
                 sh "docker image rmi ravitejadarla5/youtube-clone:latest ravitejadarla5/youtube-clone:version-${BUILD_NUMBER}"
             }
         }
+        stage ('Deploy-Kubernets'){
+            steps {
+                script {
+                    dir ('Kubernetes'){
+                        withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                            sh 'kubectl apply -f deployment.yml'
+                            sh 'kubectl apply -f service.yml'
+                        }
+                    }
+                }
+            }
+        }
     }
 }
